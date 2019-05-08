@@ -59,7 +59,7 @@ const addInventory = _ => {
           console.log(
             //Note: If I leave stock_quantity + quantity as just stock_quantity, why does it not show me the new quantity?
             //We then confirm that the product has been restocked and how much the total stock is now.
-            `Product ID: ${selectedID} has been restocked. Total inventory now is ${stock_quantity + quantity}. View inventory to see changes.`
+            `Product ID: ${selectedID} has been restocked. Total inventory now is ${stock_quantity + parseInt(quantity)}. View inventory to see changes.`
           )
           getAction()
         })
@@ -144,10 +144,9 @@ const getAction = _ => {
           getInventory()
             .then(r => {
               const stockArr = r.map(({ stock_quantity }) => stock_quantity)
-              console.log(stockArr)
               r.forEach(({ item_id, product_name, department_name, price, stock_quantity }) => {
 
-                if (stock_quantity <= 5) {
+                if (stock_quantity <= 5) { console.log(
                   `
             ----------
               ${product_name} in ${department_name}
@@ -156,7 +155,7 @@ const getAction = _ => {
               Items left: ${stock_quantity}
             ----------
           `
-                }
+                )}
               })
               //if all the products are sufficiently stocked, then we get a single message stating the below
               if (stockArr.every(stock => stock >= 5)) {

@@ -16,7 +16,10 @@ const db = createConnection({
 //This joints departments table with products table and shows the pertinent columns along with an alias column
 async function getDepartments() {
     let response = await new Promise((resolve, reject) => {
-        db.query(`SELECT department_id, departments.department_name, over_head_costs, product_sales, product_sales - over_head_costs AS total_proft FROM departments LEFT JOIN products ON  departments.department_name = products.department_name GROUP BY department_id, departments.department_name, product_sales;`, (e, r) => {
+        db.query(`SELECT departments.department_id, departments.department_name, over_head_costs, SUM(products.product_sales) AS product_sales, SUM(products.product_sales) - departments.over_head_costs AS total_proft FROM departments
+        LEFT JOIN products
+        ON  departments.department_name = products.department_name
+        GROUP BY departments.department_id, products.department_name;`, (e, r) => {
             if (e) {
                 reject(e)
             } else {
